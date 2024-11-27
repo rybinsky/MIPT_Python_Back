@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Карточка</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .card-content {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .card-content p {
+            margin: 10px 0;
+        }
+        .card-actions {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .card-actions a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .card-actions a:hover {
+            background-color: #0056b3;
+        }
+        .card-actions .emoji-btn {
+            padding: 10px;
+            font-size: 20px;
+        }
+        .card-actions .liked {
+            background-color: #28a745;
+        }
+        .card-actions .disliked {
+            background-color: #dc3545;
+        }
+        .comments-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .comments-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .comments-section li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .comment-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .comment-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        .comment-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            height: 100px;
+        }
+        .comment-form textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        .comment-form .btn-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .comment-form .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .comment-form .btn:hover {
+            background-color: #0056b3;
+        }
+        .comment-form .btn-secondary {
+            background-color: #6c757d;
+        }
+        .comment-form .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ card.title }}</h1>
+        <div class="card-content">
+            <p>{{ card.content }}</p>
+            <p>Автор: {{ card.author.username }}</p>
+            <p>Дата создания: {{ card.created_at }}</p>
+            <p>Лайки: {{ card.likes }}</p>
+        </div>
+        <div class="card-actions">
+            <a href="{% url 'card_like' card.pk %}" class="emoji-btn {% if user_interaction and user_interaction.liked %}liked{% endif %}">👍</a>
+            <a href="{% url 'card_dislike' card.pk %}" class="emoji-btn {% if user_interaction and user_interaction.disliked %}disliked{% endif %}">👎</a>
+            <a href="{% url 'card_update' card.pk %}">Редактировать</a>
+        </div>
+        <div class="comments-section">
+            <h2>Комментарии:</h2>
+            <ul>
+                {% for comment in comments %}
+                    <li>
+                        {{ comment.text }}
+                        <p>Автор: {{ comment.author.username }}</p>
+                        <p>Дата создания: {{ card.created_at|date:"d.m.Y H:i" }}</p>
+                        <a href="{% url 'comment_delete' comment.pk %}">Удалить</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="comment-form">
+            <h2>Новый комментарий</h2>
+            <form method="post" action="{% url 'comment_create' card.pk %}">
+                {% csrf_token %}
+                <label for="{{ comment_form.text.id_for_label }}">Текст:</label>
+                {{ comment_form.text }}
+                <div class="btn-container">
+                    <button type="submit" class="btn">Добавить</button>
+                    <a href="{% url 'card_list' %}" class="btn btn-secondary">Назад</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

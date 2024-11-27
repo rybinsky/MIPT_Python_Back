@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    image: cards_app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - DEBUG=1
+    command: python hw5/manage.py runserver 0.0.0.0:8080
