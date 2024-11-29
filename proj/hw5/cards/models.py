@@ -32,4 +32,4 @@ class UserCardInteraction(models.Model):
         unique_together = ('user', 'card')
 
     def __str__(self):
-        return f"{self.user.username} - {self.card.title} - Liked: {self.liked}, Disliked: {self.disliked}"
+        return f"{self.user.username} - {self.card.title} - Лайки: {self.liked}, Дизлайки: {self.disliked}"

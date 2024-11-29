@@ -1,5 +1,4 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from . import views
 
 urlpatterns = [
@@ -13,6 +12,5 @@ urlpatterns = [
     path('<int:pk>/like/', views.card_like_view, name='card_like'),
     path('<int:pk>/dislike/', views.card_dislike_view, name='card_dislike'),
     path('login/', views.login_view, name='login'),
-    # path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('register/', views.register_view, name='register'),
 ]
