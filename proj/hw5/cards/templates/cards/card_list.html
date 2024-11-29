@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Карточки</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .card-item {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+        .card-item:hover {
+            background-color: #e9e9e9;
+        }
+        .card-item h2 {
+            margin-top: 0;
+        }
+        .card-item p {
+            margin: 10px 0;
+        }
+        .card-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .create-card-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .create-card-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Карточки</h1>
+        <ul>
+            {% for card in cards %}
+                <li>
+                    <a href="{% url 'card_detail' card.pk %}" class="card-link">
+                        <div class="card-item">
+                            <h2>{{ card.title }}</h2>
+                            <p>Автор: {{ card.author.username }}</p>
+                            <p>Дата создания: {{ card.created_at|date:"d.m.Y H:i" }}</p>
+                            <p>Лайки: {{ card.likes }}</p>
+                        </div>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'card_create' %}" class="create-card-btn">Создать карточку</a>
+    </div>
+</body>
+</html>
